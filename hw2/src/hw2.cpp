@@ -1,6 +1,10 @@
 #include <vector>
 #include "../hw1/include/hw1.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstring>
 
 class Image {
     public:
@@ -40,14 +44,11 @@ class Image {
 
 class CameraImage: public Image {
     public:
-        CameraImage() : Image() {
-        }
+        CameraImage() : Image() {}
 
-        CameraImage(int x, int y) : Image(x, y){
-        }
+        CameraImage(int x, int y) : Image(x, y){}
 
         CameraImage(std::vector<int> &copy_from, int x, int y) : Image(copy_from, x, y) {
-        
         }
 
         void populate_vector() {
@@ -77,15 +78,73 @@ class CameraImage: public Image {
         void flip_vector() {
             ::flip_vector(this->v, this->x, this->y);
         }
-        
+    
 };
 
+class PersistentCameraImage : public CameraImage {
+    public:
+        PersistentCameraImage() : CameraImage() {}
+        PersistentCameraImage(int x, int y) : CameraImage(x, y) {}
+        PersistentCameraImage(std::vector<int> &copy_from, int x, int y): CameraImage(copy_from, x, y) {}
 
+        //new constructor
+        PersistentCameraImage(const std::string& infilename, const std::string& outfilename) {
+            std::ifstream infile(infilename);    
+            std::string line;
+            std::string all_num_str = "";
+            int line_no = 0;
+            int total = 0;
+
+            while (std::getline(infile, line)) {
+                line_no ++;
+                all_num_str += line;
+                all_num_str += " ";
+            }
+            this->y = line_no;
+            
+            char tmp[all_num_str.size() + 1];
+            std::strcpy(tmp, all_num_str.c_str());
+            char *token = std::strtok(tmp, " ");
+            while (token != NULL){
+                //std::cout << std::atoi(token) << std::endl;
+                this->v.push_back(std::atoi(token));
+                total ++;
+                token = std::strtok(NULL, " ");
+            }
+            //this->v.pop_back();
+            this->x = (total) / (3 * y);
+           
+            this->output_file = true;
+            this->output_filename = outfilename;
+
+
+        }
+
+        void print_vector() {
+            if (this->output_file) {
+                std::cout << "redirect to output file!" << std::endl;
+                std::cout << this->output_filename << std::endl;
+
+                std::ofstream out(this->output_filename);
+                std::streambuf *coutbuf = std::cout.rdbuf();
+                std::cout.rdbuf(out.rdbuf());
+
+                ::print_vector(this->v, this->x, this->y);
+                std::cout.rdbuf(coutbuf);
+            } else {
+                ::print_vector(this->v, this->x, this->y);
+            }
+            
+        }
+    
+    private:
+        std::string output_filename;
+        bool output_file = false;
+};
 
 int main(void){
-    //TODO: create a CameraImage class and try some member functions;
-//    CameraImage myCameraImage = CameraImage();
     CameraImage myCameraImage = CameraImage(3, 5);
+
     myCameraImage.print_vector();
     myCameraImage.populate_vector();
     myCameraImage.print_vector();
@@ -103,5 +162,7 @@ int main(void){
     myCameraImage.replace_in_vector(position, 'r', 0);
     myCameraImage.print_vector();
 
+    PersistentCameraImage tmp = PersistentCameraImage("input.txt", "result1.txt");
+    tmp.print_vector();
     return 0;
 }
