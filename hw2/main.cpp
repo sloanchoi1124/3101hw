@@ -1,13 +1,18 @@
+#include <iostream>
+#include "src/image.h"
+#include "src/camera_image.h"
+#include "src/persistent_camera_image.h"
 #include <vector>
 #include <iostream>
-#include "hw1/include/hw1.h"
-int main() {
-    int x = 5;
-    int y = 9;
-    std::vector<int> v(x*y*3);
-    populate_vector(v);
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cstring>
 
-    for(int i : v)
-        std::cout << i << " ";
-    std::cout << std::endl;
+int main(void) {
+    CameraImage tmp = CameraImage(3, 5);
+    tmp.print_vector();
+    tmp.average_vector();
+    tmp.print_vector();
+    return 0;
 }
