@@ -29,7 +29,7 @@ clean:
 	rm -f *.opp *.o $(TARGET1) src/*.opp src/*.o
 	make -C hw1 clean
 
-run1: $(TARGET1)
+run: $(TARGET1)
 	LD_LIBRARY_PATH=./hw1/include ./$(TARGET1)
 
-.PHONY: clean run1 help hw1
+.PHONY: clean run help hw1

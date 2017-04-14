@@ -1,0 +1,23 @@
+W3101   HW2     Sloan Cui   UNI: xc2315
+
+To run the user-interactive code in hw2/main.cpp,
+make run
+
+
+directory structure:
+- hw1/
+    - include/      (modified; libhw1 is here)
+    - Makefile      (modified)
+    - part1
+    - part2
+    - part3
+- include/
+    - hw2.h         (modified; contains headers of the 3 classes)
+- src/
+    ...             (modified: 3 header files; 
+                    hw2.cpp contains implementation of the 3 classes
+                    and test script for member functions)
+- main.cpp          (modified: user interactive program;)
+- Makefile          (modified)
+- input.txt         (test input for PersistentCameraImage)
+

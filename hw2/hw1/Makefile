@@ -58,7 +58,7 @@ part3: part3b
 all: part1b part2b part3b $(TARGET_LIB)
 
 clean:
-	rm -rf ./*.opp part1b part2b part3b
+	rm -rf ./*.opp part1b part2b part3b include/libhw1.so
 
 .PHONY: clean all part1 part2 part3 $(TARGET_LIB)
 
