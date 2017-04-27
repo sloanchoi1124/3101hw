@@ -123,11 +123,26 @@ public:
 
     template<typename U, typename H>
     friend bool operator!=(const CameraImage<U>& lhs, const CameraImage<H>& rhs) {
-        return true;
+        if (lhs.height * lhs.width != rhs.height * rhs.width)
+            return true;
+
+        int t;
+        for (t = 0; t < lhs.local_buffer.size(); ++t) {
+            if ((float)lhs.local_buffer[t] != (float)rhs.local_buffer[t])
+                return true;
+        }
+        return false;
     }
 
     template<typename U, typename H>
     friend bool operator==(const CameraImage<U>& lhs, const CameraImage<H>& rhs) {
+        if (lhs.height * lhs.width != rhs.height * rhs.width)
+            return false;
+        int t;
+        for (t = 0; t < lhs.local_buffer.size(); ++t) {
+            if ((float)lhs.local_buffer[t] != (float)rhs.local_buffer[t])
+                return false;
+        }
         return true;
     }
 
